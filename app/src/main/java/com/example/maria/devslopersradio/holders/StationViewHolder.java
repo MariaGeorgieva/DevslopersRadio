@@ -21,8 +21,8 @@ public class StationViewHolder extends RecyclerView.ViewHolder {
 
         super(itemView);
 
-        this.mainImage = (ImageView) itemView.findViewById(R.id.main_image);
-        this.titleTextView = (TextView) itemView.findViewById(R.id.main_text);
+        this.mainImage = (ImageView) itemView.findViewById(R.id.detail_main_image);
+        this.titleTextView = (TextView) itemView.findViewById(R.id.detail_main_text);
     }
 
     public void updateUI(Station station) {

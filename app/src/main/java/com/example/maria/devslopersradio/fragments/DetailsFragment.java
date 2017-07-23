@@ -1,13 +1,18 @@
 package com.example.maria.devslopersradio.fragments;
 
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.maria.devslopersradio.R;
+import com.example.maria.devslopersradio.adapters.DetailsAdapter;
+import com.example.maria.devslopersradio.services.DataService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,14 +20,13 @@ import com.example.maria.devslopersradio.R;
  * create an instance of this fragment.
  */
 public class DetailsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_DETAIL_PLAYLIST_TYPE = "station_detail_type";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public static final int DETAIL_PLAYLIST_POP_MUSIC = 0;
+    public static final int DETAIL_PLAYLIST_LOVE_MUSIC = 1;
+    public static final int DETAIL_PLAYLIST_DISCO_MUSIC = 2;
+
+    private int playListType;
 
 
     public DetailsFragment() {
@@ -33,16 +37,14 @@ public class DetailsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param playListType The type of play List
      * @return A new instance of fragment DetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DetailsFragment newInstance(String param1, String param2) {
+    public static DetailsFragment newInstance(int playListType) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_DETAIL_PLAYLIST_TYPE, playListType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,16 +53,39 @@ public class DetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            playListType = getArguments().getInt(ARG_DETAIL_PLAYLIST_TYPE);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_details, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false);
-    }
 
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycler_detail);
+        //to be more faster we use:
+        recyclerView.setHasFixedSize(true);
+
+        DetailsAdapter adapter;
+        if (playListType == DETAIL_PLAYLIST_POP_MUSIC) {
+            adapter = new DetailsAdapter(DataService.getInstance().getPopMusicPlaylist());
+        } else if (playListType == DETAIL_PLAYLIST_LOVE_MUSIC) {
+            adapter = new DetailsAdapter(DataService.getInstance().getLoveMusicPlaylist());
+        } else {
+            adapter = new DetailsAdapter(DataService.getInstance().getPartyStations());
+        }
+
+        recyclerView.addItemDecoration(new HorizontalSpaceItemDecorator(30));
+        recyclerView.setAdapter(adapter);
+
+        //to set it horizontal
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        return v;
+    }
 }
+
+

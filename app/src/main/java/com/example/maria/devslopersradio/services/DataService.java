@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class DataService {
     private static final DataService ourInstance = new DataService();
 
+
     public static DataService getInstance() {
         return ourInstance;
     }
@@ -46,4 +47,32 @@ public class DataService {
         list.add(new Station("Key Music", "keymusic"));
         return list;
     }
+
+    public ArrayList<Station> getPopMusicPlaylist() {
+        ArrayList<Station> popList = new ArrayList<>();
+        popList.add(new Station("Cool Pop Music", "popmusicimg"));
+        popList.add(new Station("The best Disco ever", "discomusicimg"));
+        popList.add(new Station("Music for Lovers", "lovemusic"));
+
+        return popList;
+    }
+
+    public ArrayList<Station> getDiscoMusicPlaylist() {
+        ArrayList<Station> discoList = new ArrayList<>();
+        discoList.add(new Station("Cool Pop Music", "popmusicimg"));
+        discoList.add(new Station("The best Disco ever", "discomusicimg"));
+        discoList.add(new Station("Music for Lovers", "lovemusic"));
+
+        return discoList;
+    }
+
+    public ArrayList<Station> getLoveMusicPlaylist() {
+        ArrayList<Station> loveList = new ArrayList<>();
+        loveList.add(new Station("Cool Pop Music", "popmusicimg"));
+        loveList.add(new Station("The best Disco ever", "discomusicimg"));
+        loveList.add(new Station("Music for Lovers", "lovemusic"));
+
+        return loveList;
+    }
+
 }
